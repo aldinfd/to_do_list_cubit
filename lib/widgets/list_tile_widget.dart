@@ -94,6 +94,7 @@ class ListTileWidget extends StatelessWidget {
                   builder:
                       (context) => FormAddEditWidget(thema: thema, todo: todo),
                 );
+                context.read<SearchTodoCubit>().refresh(stateTodos);
               },
               icon: const Icon(Icons.edit),
               tooltip: 'Edit',
