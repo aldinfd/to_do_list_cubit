@@ -77,8 +77,19 @@ class TodoCubit extends Cubit<List<TodoModel>> {
     );
   }
 
-  void deleteTodo(String id) {
-    emit(state.where((todo) => todo.id != id).toList());
+  void deleteTodo(String id) async {
+    try {
+      Uri url = Uri.parse(
+        "https://http-req-e8d2a-default-rtdb.firebaseio.com/users/${id}.json",
+      );
+      final response = await http.delete(url);
+      if (response.statusCode != 200) {
+        throw Exception("Gagal Mengapus Data : ${response.statusCode}");
+      }
+      fetchTodos();
+    } catch (error) {
+      "deleteTodo error : ${error}";
+    }
   }
 
   void activeTodo(String id) {
