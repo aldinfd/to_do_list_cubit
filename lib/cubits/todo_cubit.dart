@@ -33,7 +33,6 @@ class TodoCubit extends Cubit<List<TodoModel>> {
       }
 
       final dataTodos = decoded;
-      print(dataTodos);
 
       final List<TodoModel> todos =
           dataTodos.entries
@@ -66,15 +65,28 @@ class TodoCubit extends Cubit<List<TodoModel>> {
     }
   }
 
-  void editTodo(String idTodo, String newTitle, String newSubtitle) {
-    emit(
-      state.map((todo) {
-        if (todo.id == idTodo) {
-          return TodoModel(id: todo.id, title: newTitle, subtitle: newSubtitle);
-        }
-        return todo;
-      }).toList(),
-    );
+  void editTodo(String idTodo, String newTitle, String newSubtitle) async {
+    try {
+      Uri url = Uri.parse(
+        "https://http-req-e8d2a-default-rtdb.firebaseio.com/users/${idTodo}.json",
+      );
+      final newTodo = {"title": newTitle, "subtitle": newSubtitle};
+      final response = await http.patch(url, body: jsonEncode(newTodo));
+      if (response.statusCode != 200) {
+        throw Exception("Gagal Mengedit Data : ${response.statusCode}");
+      }
+      fetchTodos();
+    } catch (error) {
+      "editTodo error : ${error}";
+    }
+    // emit(
+    //   state.map((todo) {
+    //     if (todo.id == idTodo) {
+    //       return TodoModel(id: todo.id, title: newTitle, subtitle: newSubtitle);
+    //     }
+    //     return todo;
+    //   }).toList(),
+    // );
   }
 
   void deleteTodo(String id) async {
