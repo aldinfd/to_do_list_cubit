@@ -21,8 +21,7 @@ class TodoScreen extends StatefulWidget {
 class _TodoScreenState extends State<TodoScreen> {
   @override
   void initState() {
-    // TODO: implement initState
-    context.read<TodoCubit>().getTodoApi();
+    context.read<TodoCubit>().fetchTodos();
     super.initState();
   }
 

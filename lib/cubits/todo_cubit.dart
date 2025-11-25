@@ -10,7 +10,7 @@ class TodoCubit extends Cubit<List<TodoModel>> {
 
   final uuid = Uuid();
 
-  void getTodoApi() async {
+  void fetchTodos() async {
     try {
       Uri url = Uri.parse(
         "https://http-req-e8d2a-default-rtdb.firebaseio.com/users.json",
@@ -42,18 +42,29 @@ class TodoCubit extends Cubit<List<TodoModel>> {
 
       emit(todos);
     } catch (error) {
-      "getTodoApi : ${error}";
+      "fetchTodos : ${error}";
     }
   }
 
-  // void addTodo(String titleController, String subtitle) {
-  //   TodoModel todo = TodoModel(
-  //     id: uuid.v4(),
-  //     title: titleController,
-  //     subtitle: subtitle,
-  //   );
-  //   emit([...state, todo]);
-  // }
+  void addTodo(String titleController, String subtitle) async {
+    try {
+      Uri url = Uri.parse(
+        "https://http-req-e8d2a-default-rtdb.firebaseio.com/users.json",
+      );
+      final newTodo = {"title": titleController, "subtitle": subtitle};
+      final response = await http.post(
+        url,
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(newTodo),
+      );
+      if (response.statusCode != 200) {
+        throw Exception("Gagal Menambahkan Data : ${response.statusCode}");
+      }
+      fetchTodos();
+    } catch (error) {
+      "addTodo error : ${error}";
+    }
+  }
 
   void editTodo(String idTodo, String newTitle, String newSubtitle) {
     emit(

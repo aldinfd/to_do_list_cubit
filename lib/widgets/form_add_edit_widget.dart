@@ -114,10 +114,10 @@ class _FormAddEditWidgetState extends State<FormAddEditWidget> {
                       }
 
                       widget.todo == null
-                          ? null
-                          // context.read<TodoCubit>().addTodo(
-                          //   titleController.text,
-                          //   subtitleController.text,
+                          ? context.read<TodoCubit>().addTodo(
+                            titleController.text,
+                            subtitleController.text,
+                          )
                           : context.read<TodoCubit>().editTodo(
                             widget.todo!.id,
                             titleController.text,
