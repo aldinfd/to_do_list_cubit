@@ -11,8 +11,20 @@ import 'package:to_do_list_cubit/cubits/thema_todo_cubit.dart';
 import 'package:to_do_list_cubit/models/thema_todo_model.dart';
 import 'package:to_do_list_cubit/widgets/search_widget.dart';
 
-class TodoScreen extends StatelessWidget {
+class TodoScreen extends StatefulWidget {
   const TodoScreen({super.key});
+
+  @override
+  State<TodoScreen> createState() => _TodoScreenState();
+}
+
+class _TodoScreenState extends State<TodoScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    context.read<TodoCubit>().getTodoApi();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

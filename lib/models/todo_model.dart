@@ -24,4 +24,8 @@ class TodoModel {
       subtitle: subtitle ?? this.subtitle,
     );
   }
+
+  factory TodoModel.fromJson(String id, Map<String, dynamic> json) {
+    return TodoModel(id: id, title: json["title"], subtitle: json["subtitle"]);
+  }
 }
